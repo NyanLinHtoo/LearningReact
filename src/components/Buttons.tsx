@@ -1,5 +1,6 @@
 import { Button } from "@headlessui/react";
 import { toast } from "sonner";
+import { GiPowerButton } from "react-icons/gi";
 
 interface Props {
   colorType: "success" | "info" | "error" | "warning";
@@ -28,11 +29,13 @@ const Buttons = ({ colorType }: Props) => {
     // <button onClick={() => toast.success("Testing Toast")}>
     //   Testing Toast
     // </button>
-    <Button
-      className="rounded bg-sky-600 py-2 px-4 text-sm text-white data-[hover]:bg-sky-500 data-[active]:bg-sky-700"
-      onClick={handleClick}>
-      Testing Button
-    </Button>
+    <>
+      <Button
+        className="rounded bg-sky-600 py-2 px-4 text-sm text-white data-[hover]:bg-sky-500 data-[active]:bg-sky-700"
+        onClick={handleClick}>
+        <GiPowerButton color="white" size={20} />
+      </Button>
+    </>
   );
 };
 
