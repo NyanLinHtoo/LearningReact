@@ -1,18 +1,19 @@
 import { useState } from "react";
 
-function ListGroup() {
-  const items = ["Yangon", "Mandalay", "Myanmar", "Bangkok"];
+interface Props {
+  items: string[];
+  heading: string;
+}
+
+function ListGroup(props: Props) {
   const [selectedIndex, setSelectedIndex] = useState(-1);
-  // const handleClick = (event: MouseEvent) => {
-  //   console.log(event);
-  // };
 
   return (
     <>
-      <h1>List Group</h1>
-      {items.length === 0 ? <p>No Item Found</p> : null}
+      <h1>{props.heading}</h1>
+      {props.items.length === 0 ? <p>No Item Found</p> : null}
       <ul className="list-inside list-disc">
-        {items.map((item, index) => {
+        {props.items.map((item, index) => {
           return (
             <li
               key={item}
