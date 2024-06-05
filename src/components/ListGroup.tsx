@@ -3,22 +3,24 @@ import { useState } from "react";
 interface Props {
   items: string[];
   heading: string;
+  handleSelectedItem: (item: string) => void;
 }
 
-function ListGroup(props: Props) {
+function ListGroup({ items, heading, handleSelectedItem }: Props) {
   const [selectedIndex, setSelectedIndex] = useState(-1);
 
   return (
     <>
-      <h1>{props.heading}</h1>
-      {props.items.length === 0 ? <p>No Item Found</p> : null}
+      <h1>{heading}</h1>
+      {items.length === 0 ? <p>No Item Found</p> : null}
       <ul className="list-inside list-disc">
-        {props.items.map((item, index) => {
+        {items.map((item, index) => {
           return (
             <li
               key={item}
               onClick={() => {
                 setSelectedIndex(index);
+                handleSelectedItem(item);
               }}
               className={
                 selectedIndex === index

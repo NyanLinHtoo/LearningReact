@@ -1,13 +1,15 @@
-import Message from "./Message";
-import ListGroup from "./components/ListGroup";
+import { Toaster, toast } from "sonner";
+import Alert from "./components/Alert";
 
 function App() {
-  const items = ["Yangon", "Mandalay", "Myanmar", "Bangkok"];
-
   return (
     <div className="pl-5">
-      <Message></Message>
-      <ListGroup items={items} heading="Cities" />
+      <Toaster position="top-right" richColors />
+      <Alert>
+        <button onClick={() => toast.success("Testing Toast")}>
+          Testing Toast
+        </button>
+      </Alert>
     </div>
   );
 }
