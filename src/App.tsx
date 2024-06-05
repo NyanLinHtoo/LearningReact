@@ -1,14 +1,13 @@
-import { Toaster, toast } from "sonner";
+import { Toaster } from "sonner";
 import Alert from "./components/Alert";
+import Buttons from "./components/Buttons";
 
 function App() {
   return (
     <div className="pl-5">
       <Toaster position="top-right" richColors />
       <Alert>
-        <button onClick={() => toast.success("Testing Toast")}>
-          Testing Toast
-        </button>
+        <Buttons colorType="error" />
       </Alert>
     </div>
   );

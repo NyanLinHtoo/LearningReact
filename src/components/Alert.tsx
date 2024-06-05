@@ -5,7 +5,7 @@ interface Props {
 }
 
 const Alert = ({ children }: Props) => {
-  return <div>{children}</div>;
+  return <div className="p-5">{children}</div>;
 };
 
 export default Alert;
