@@ -2,41 +2,22 @@ import { useState } from "react";
 import Like from "./components/Like";
 
 function App() {
-  const [drink, setDrink] = useState({
-    title: "Americano",
-    price: 5,
-  });
-  const [person, setPerson] = useState({
-    name: "John",
-    age: 30,
-    address: {
-      street: "Main St",
-      city: "New York",
-    },
-  });
+  const [tags, setTags] = useState(["happy", "sad"]);
 
   const handleClick = () => {
-    const newDrint = {
-      title: "Americano",
-      price: (drink.price += 1),
-    };
-    setDrink(newDrint);
+    // Add
+    setTags([...tags, "warning"]);
 
-    const newData = {
-      ...person,
-      age: person.age + 1,
-      address: {
-        ...person.address,
-        city: "Yangon",
-      },
-    };
-    setPerson(newData);
+    // Remove
+    setTags(tags.filter((tag) => tag !== "happy"));
+
+    // Update
+    setTags(tags.map((tag) => (tag === "happy" ? "happiness" : tag)));
   };
+
   return (
     <div className="p-8">
-      {drink.title} {drink.price} <br />
-      {person.name}
-      {person.age} {person.address.city}
+      {tags}
       <Like onClick={handleClick} />
     </div>
   );
