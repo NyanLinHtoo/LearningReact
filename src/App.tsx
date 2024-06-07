@@ -2,22 +2,32 @@ import { useState } from "react";
 import Like from "./components/Like";
 
 function App() {
-  const [tags, setTags] = useState(["happy", "sad"]);
+  const [bugs, setBugs] = useState([
+    {
+      id: 1,
+      title: "bug1",
+      solved: false,
+    },
+    {
+      id: 2,
+      title: "bug2",
+      solved: false,
+    },
+  ]);
 
   const handleClick = () => {
-    // Add
-    setTags([...tags, "warning"]);
-
-    // Remove
-    setTags(tags.filter((tag) => tag !== "happy"));
-
-    // Update
-    setTags(tags.map((tag) => (tag === "happy" ? "happiness" : tag)));
+    setBugs(
+      bugs.map((bug) => (bug.title === "bug1" ? { ...bug, solved: true } : bug))
+    );
   };
 
   return (
     <div className="p-8">
-      {tags}
+      {bugs.map((bug) => (
+        <div key={bug.id}>
+          {bug.title} {bug.solved}
+        </div>
+      ))}
       <Like onClick={handleClick} />
     </div>
   );
