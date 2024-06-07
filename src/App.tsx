@@ -1,17 +1,23 @@
-// import { Toaster } from "sonner";
-// import Alert from "./components/Alert";
-// import Buttons from "./components/Buttons";
-
+import { useState } from "react";
 import Like from "./components/Like";
 
 function App() {
+  const [drink, setDrink] = useState({
+    title: "Americano",
+    price: 5,
+  });
+
+  const handleClick = () => {
+    const newDrint = {
+      title: "Americano",
+      price: (drink.price += 1),
+    };
+    setDrink(newDrint);
+  };
   return (
     <div className="p-8">
-      {/* <Toaster position="top-right" richColors />
-      <Alert>
-        <Buttons colorType="error" />
-      </Alert> */}
-      <Like onClick={() => console.log("Clicked")} />
+      {drink.title} {drink.price}
+      <Like onClick={handleClick} />
     </div>
   );
 }
