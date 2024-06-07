@@ -1,6 +1,13 @@
+import { FormEvent } from "react";
+
 function App() {
+  const handleSubmit = (event: FormEvent) => {
+    event.preventDefault();
+    console.log("Submitted");
+  };
+
   return (
-    <form className="max-w-sm p-5">
+    <form className="max-w-sm p-5" onSubmit={handleSubmit}>
       <div className="mb-3">
         <label htmlFor="name" className="block mb-2 text-sm font-medium ">
           Your Name
