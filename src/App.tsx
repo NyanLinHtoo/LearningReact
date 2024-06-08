@@ -9,12 +9,15 @@ function App() {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm<formData>();
 
   const onSubmit = (data: FieldValues) => {
     console.log(data);
   };
+
+  // Determine the cursor class based on the form's validity
+  const cursorClass = !isValid ? "cursor-not-allowed" : "cursor-pointer";
 
   return (
     <form className="max-w-sm p-5" onSubmit={handleSubmit(onSubmit)}>
@@ -48,7 +51,12 @@ function App() {
           className="bg-gray-50 border border-gray-300  text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5   "
         />
       </div>
-      <button className="text-white rounded bg-blacktext-white bg-blue-700 hover:bg-blue-800 px-5 py-2.5">
+      <button
+        // type="button"
+        disabled={!isValid}
+        className={` text-white rounded bg-blacktext-white bg-blue-700 px-5 py-2.5 ${cursorClass}`}
+        // className=" text-white rounded bg-blacktext-white bg-blue-700 hover:bg-blue-800 px-5 py-2.5"
+      >
         Submit
       </button>
     </form>
