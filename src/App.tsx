@@ -1,65 +1,63 @@
-import { FieldValues, useForm } from "react-hook-form";
+import { useState } from "react";
+import ExpenseForm from "./components/Expense/ExpenseForm";
+import ExpenseList from "./components/Expense/ExpenseList";
+import ExpenseFilter from "./components/Expense/ExpenseFilter";
 
 function App() {
-  interface formData {
-    name: string;
-    age: number;
-  }
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [expenses, setExpenses] = useState([
+    {
+      id: 1,
+      description: "Milk",
+      amount: 5,
+      category: "Groceries",
+    },
+    {
+      id: 2,
+      description: "Eggs",
+      amount: 10,
+      category: "Groceries",
+    },
+    {
+      id: 3,
+      description: "Electricity",
+      amount: 100,
+      category: "Utilities",
+    },
+    {
+      id: 4,
+      description: "Movies",
+      amount: 15,
+      category: "Entertainment",
+    },
+  ]);
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isValid },
-  } = useForm<formData>();
+  const visiableCategory = selectedCategory
+    ? expenses.filter((e) => e.category === selectedCategory)
+    : expenses;
 
-  const onSubmit = (data: FieldValues) => {
-    console.log(data);
+  const onDelete = (id: number) => {
+    setExpenses(expenses.filter((expense) => expense.id !== id));
   };
 
-  // Determine the cursor class based on the form's validity
-  const cursorClass = !isValid ? "cursor-not-allowed" : "cursor-pointer";
-
   return (
-    <form className="max-w-sm p-5" onSubmit={handleSubmit(onSubmit)}>
-      <div className="mb-3">
-        <label htmlFor="name" className="block mb-2 text-sm font-medium ">
-          Your Name
-        </label>
-        <input
-          {...register("name", { required: true, minLength: 3 })}
-          type="name"
-          id="name"
-          className="bg-gray-50 border border-gray-300  text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  "
-        />
-        {errors.name?.type === "required" && (
-          <span className="text-sm text-red-600">Name is required</span>
-        )}
-        {errors.name?.type === "minLength" && (
-          <span className="text-sm text-red-600">
-            Name Character must be over 3.
-          </span>
-        )}
-      </div>
-      <div className="mb-5">
-        <label htmlFor="age" className="block mb-2 text-sm font-medium ">
-          Your Age
-        </label>
-        <input
-          {...register("age")}
-          type="number"
-          id="number"
-          className="bg-gray-50 border border-gray-300  text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5   "
-        />
-      </div>
-      <button
-        // type="button"
-        disabled={!isValid}
-        className={` text-white rounded bg-blacktext-white bg-blue-700 px-5 py-2.5 ${cursorClass}`}
-        // className=" text-white rounded bg-blacktext-white bg-blue-700 hover:bg-blue-800 px-5 py-2.5"
-      >
-        Submit
-      </button>
-    </form>
+    <div>
+      <ExpenseForm
+        onSubmit={(expense) =>
+          setExpenses([
+            ...expenses,
+            {
+              ...expense,
+              id: expenses.length + 1,
+            },
+          ])
+        }
+      />
+      <ExpenseFilter
+        onSelectCategory={(category) => setSelectedCategory(category)}
+      />
+      <ExpenseList expenses={visiableCategory} onDelete={onDelete} />
+    </div>
   );
 }
 
