@@ -57,6 +57,18 @@ const App = () => {
       });
   };
 
+  const updateUser = (user: User) => {
+    const updatedUser = { id: 0, name: user.name + "!" };
+    setUsers(users.map((u) => (u.id === user.id ? updatedUser : u)));
+
+    axios
+      .patch("https://jsonplaceholder.typicode.com/users/" + user.id)
+      .catch((err) => {
+        setErrors(err.message);
+        setUsers(originalUsers);
+      });
+  };
+
   return (
     <div className="max-w-md mx-auto mt-44">
       {errors && <p className="text-red-600 font-medium">{errors}</p>}
@@ -66,7 +78,7 @@ const App = () => {
         </div>
       )}
       <button
-        className="inline-block px-2.5 py-2 rounded-md  bg-blue-500 hover:bg-blue-700 text-white"
+        className="inline-block px-2.5 py-2 rounded-md my-1 bg-blue-500 hover:bg-blue-700 text-white"
         onClick={() => addUser()}>
         Add
       </button>
@@ -76,11 +88,18 @@ const App = () => {
             key={user.id}
             className="list-disc flex items-center justify-between px-3 py-1 border rounded-md">
             {user.name}
-            <button
-              className="inline-block px-2.5 py-2 rounded-md  bg-blue-500 hover:bg-blue-700 text-white"
-              onClick={() => deleteUser(user)}>
-              Delete
-            </button>
+            <div>
+              <button
+                className="inline-block px-2.5 py-2 rounded-md border border-gray-600  text-black mx-1"
+                onClick={() => updateUser(user)}>
+                Update
+              </button>
+              <button
+                className="inline-block px-2.5 py-2 rounded-md  bg-rose-500 hover:bg-rose-700 text-white mx-1"
+                onClick={() => deleteUser(user)}>
+                Delete
+              </button>
+            </div>
           </li>
         ))}
       </ul>
