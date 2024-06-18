@@ -1,31 +1,10 @@
-import { useEffect, useState } from "react";
 import Loader from "./components/Loader/Loader";
-import { AxiosError } from "./services/api-client";
 import userServices, { User } from "./services/user-services";
+import useUsers from "./hooks/useUsers";
 
 const App = () => {
-  const [users, setUsers] = useState<User[]>([]);
-  const [errors, setErrors] = useState("");
-  const [isLoading, setLoading] = useState(false);
-
+  const { users, errors, isLoading, setUsers, setErrors } = useUsers();
   const originalUsers = [...users];
-
-  useEffect(() => {
-    setLoading(true);
-
-    const fetchData = async () => {
-      try {
-        const res = await userServices.getAll<User>();
-        setUsers(res.data);
-        setErrors("");
-        setLoading(false);
-      } catch (err) {
-        setErrors((err as AxiosError).message);
-        setLoading(false);
-      }
-    };
-    fetchData();
-  }, []);
 
   const deleteUser = (user: User) => {
     setUsers(users.filter((u) => u.id !== user.id));
