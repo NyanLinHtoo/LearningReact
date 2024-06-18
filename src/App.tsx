@@ -8,9 +8,11 @@ interface User {
 }
 
 const App = () => {
-  const [users, SetUsers] = useState<User[]>([]);
+  const [users, setUsers] = useState<User[]>([]);
   const [errors, setErrors] = useState("");
   const [isLoading, setLoading] = useState(false);
+
+  const originalUsers = [...users];
 
   useEffect(() => {
     setLoading(true);
@@ -20,7 +22,7 @@ const App = () => {
         const res = await axios.get<User[]>(
           "https://jsonplaceholder.typicode.com/users"
         );
-        SetUsers(res.data);
+        setUsers(res.data);
         setErrors("");
         setLoading(false);
       } catch (err) {
@@ -32,14 +34,26 @@ const App = () => {
   }, []);
 
   const deleteUser = (user: User) => {
-    const originalUsers = [...users];
-    SetUsers(users.filter((u) => u.id !== user.id));
+    setUsers(users.filter((u) => u.id !== user.id));
 
     axios
       .delete("https://jsonplaceholder.typicode.com/users/" + user.id)
       .catch((err) => {
         setErrors(err.message);
-        SetUsers(originalUsers);
+        setUsers(originalUsers);
+      });
+  };
+
+  const addUser = () => {
+    const newUser = { id: 0, name: "Nyan Lin Htoo" };
+    setUsers([newUser, ...users]);
+
+    axios
+      .post("https://jsonplaceholder.typicode.com/users/", newUser)
+      .then(({ data: savedData }) => setUsers([savedData, ...users]))
+      .catch((err) => {
+        setErrors(err.message);
+        setUsers(originalUsers);
       });
   };
 
@@ -51,6 +65,11 @@ const App = () => {
           <Loader />
         </div>
       )}
+      <button
+        className="inline-block px-2.5 py-2 rounded-md  bg-blue-500 hover:bg-blue-700 text-white"
+        onClick={() => addUser()}>
+        Add
+      </button>
       <ul className="list-inside">
         {users.map((user) => (
           <li
