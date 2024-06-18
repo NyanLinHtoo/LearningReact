@@ -1,11 +1,7 @@
 import { useEffect, useState } from "react";
 import Loader from "./components/Loader/Loader";
-import apiClient, { AxiosError } from "./services/api-client";
-
-interface User {
-  id: number;
-  name: string;
-}
+import { AxiosError } from "./services/api-client";
+import userServices, { User } from "./services/user-services";
 
 const App = () => {
   const [users, setUsers] = useState<User[]>([]);
@@ -19,7 +15,7 @@ const App = () => {
 
     const fetchData = async () => {
       try {
-        const res = await apiClient.get<User[]>("/users");
+        const res = await userServices.getAllUser();
         setUsers(res.data);
         setErrors("");
         setLoading(false);
@@ -34,7 +30,7 @@ const App = () => {
   const deleteUser = (user: User) => {
     setUsers(users.filter((u) => u.id !== user.id));
 
-    apiClient.delete("/users/" + user.id).catch((err) => {
+    userServices.deleteUser(user.id).catch((err) => {
       setErrors(err.message);
       setUsers(originalUsers);
     });
@@ -44,8 +40,8 @@ const App = () => {
     const newUser = { id: 0, name: "Nyan Lin Htoo" };
     setUsers([newUser, ...users]);
 
-    apiClient
-      .post("/users/", newUser)
+    userServices
+      .createUser(newUser)
       .then(({ data: savedData }) => setUsers([savedData, ...users]))
       .catch((err) => {
         setErrors(err.message);
@@ -57,7 +53,7 @@ const App = () => {
     const updatedUser = { id: 0, name: user.name + "!" };
     setUsers(users.map((u) => (u.id === user.id ? updatedUser : u)));
 
-    apiClient.patch("/users/" + user.id, updatedUser).catch((err) => {
+    userServices.updateUser(updatedUser).catch((err) => {
       setErrors(err.message);
       setUsers(originalUsers);
     });
